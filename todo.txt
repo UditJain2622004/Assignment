@@ -1,4 +1,0 @@
-Search engine changed to yahoo again
-adding category to product by name while creating product , right now we hv to specify id of category
-changing, removing, adding categories of a product
-get product by using category name in "getProductByCategory"

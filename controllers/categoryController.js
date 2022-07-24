@@ -50,6 +50,7 @@ exports.createCategory = async (req, res, next) => {
 exports.deleteCategory = async (req, res, next) => {
   const category = await Category.findById(req.params.id);
 
+  // delete all the products belonging to the deleted category
   category.products.forEach(async (product) => {
     await Product.findByIdAndDelete(product);
   });

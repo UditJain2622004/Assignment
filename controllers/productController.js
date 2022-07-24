@@ -61,6 +61,7 @@ exports.getProductByCategory = async (req, res, next) => {
   const products = await Product.find({
     category: req.body.category[0],
   });
+
   res.status(200).json({
     status: "success",
     Results: products.length,
@@ -71,9 +72,9 @@ exports.getProductByCategory = async (req, res, next) => {
 };
 
 exports.createProduct = async (req, res, next) => {
-  console.log(req.body);
   const product = await Product.create(req.body);
 
+  // add the productId to each category it belongs
   req.body.category.forEach(async (category) => {
     const categoryId = await Category.findByIdAndUpdate(
       category,
@@ -85,7 +86,7 @@ exports.createProduct = async (req, res, next) => {
   res.status(201).json({
     status: "success",
     data: {
-      product: "sa",
+      product,
     },
   });
 };
@@ -95,6 +96,7 @@ exports.updateProduct = async (req, res, next) => {
     runValidators: true,
     new: true,
   });
+
   res.status(200).json({
     status: "success",
     data: {
@@ -105,8 +107,8 @@ exports.updateProduct = async (req, res, next) => {
 
 exports.deleteProduct = async (req, res, next) => {
   const product = await Product.findById(req.params.id);
-  // if(!product) return next(Error("No product found"))
 
+  // delete productId from all the categories the deleted product belongs to
   product.category.forEach(async (category) => {
     await Category.findByIdAndUpdate(
       category,
@@ -114,6 +116,7 @@ exports.deleteProduct = async (req, res, next) => {
       { runValidators: true, new: true }
     );
   });
+
   await Product.findByIdAndDelete(req.params.id);
   res.status(204).json({
     status: "success",

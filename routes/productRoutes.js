@@ -6,7 +6,6 @@ const router = express.Router();
 router
   .route("/")
   .get(productController.getAllProducts)
-  // .post(productController.createCategories);
   .post(
     productController.createCategories("body"),
     productController.createProduct
@@ -18,7 +17,6 @@ router
   .patch(productController.updateProduct)
   .delete(productController.deleteProduct);
 
-// router.get("/category/:id", productController.getProductByCategory);
 router.get(
   "/category/:id",
   productController.createCategories("params"),
